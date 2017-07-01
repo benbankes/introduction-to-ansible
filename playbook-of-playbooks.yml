@@ -1,0 +1,5 @@
+- name: Run playbook
+  include: bootstrap.yml
+
+- name: Run same playbook again
+  include: bootstrap.yml

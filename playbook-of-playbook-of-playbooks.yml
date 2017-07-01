@@ -1,0 +1,2 @@
+- name: Run playbook of playbooks
+  include: playbook-of-playbooks.yml
