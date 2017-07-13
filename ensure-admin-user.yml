@@ -1,0 +1,24 @@
+- name: Ensure administrative user exists
+  hosts: all
+  remote_user: admin
+  become: yes
+
+  tasks:
+  - name: Ensure admin user exists with sudo privileges
+    user: name=admin groups=sudo append=yes password=$6$yi9e0JRNn7kB$rEghrqy5uzpXx3HUVPMJD3WOjhpP8liOwuc56EeWAIjWyBp5f5kpKadO8GD7awGpM9WPHD1qyYQj8tGDXqHlA.
+
+  - name: Ensure current sysadmin can login with this user
+    authorized_key:
+      user: admin
+      key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+  - name: Ensure password-based login for admin user is disabled
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: ^PasswordAuthentication
+      line: PasswordAuthentication no
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    systemd: name=sshd state=restarted
