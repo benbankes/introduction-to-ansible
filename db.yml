@@ -1,0 +1,12 @@
+- include: bootstrap.yml
+
+- name: Give MySQL role
+  hosts: dbservers
+  vars_files:
+    - vars/mysql.yml
+
+  roles:
+  - role: geerlingguy.mysql
+
+#  vars:
+#    mysql_root_password: hF13e5pJG9QDSQy5Igy2
